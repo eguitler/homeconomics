@@ -38,7 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'homeconomics',
-    'firstApp'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -93,7 +92,7 @@ TIME_ZONE = 'America/Buenos_Aires'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
