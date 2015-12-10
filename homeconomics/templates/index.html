@@ -2,15 +2,17 @@
 
 {% block header %}
     {% block title%}<center>Welcome to my Site</center>{% endblock %}
-{% endblock%}
+{% endblock %}
 
 {% block content %}
     <form action="#" method="post">
         {% csrf_token %}
         {{ form }}
-	<input type="submit" value="Send">
+    	<input type="submit" value="Send">
     </form>
-    <p>{{ content }}</p>
+    {% for i in data %}
+        <p>{{ i.name }} =&gt; {{ i.pk }} </p>
+    {% endfor %}
 {% endblock %}
 
 {% block footer %}

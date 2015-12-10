@@ -7,20 +7,20 @@ from models import Service
 class Home(View):
 
     def get(self,request):
-	form = myForm()
-        content = [(dt.name) for dt in Service.objects.all()]
-	context = {'content':content,
-		   'footer':"FOOTER",
-		   'form':form
-		  }
-	return render(request,'index.html',context)
+        form = myForm()
+        content = Service.objects.all()
+        context = {'data':content,
+               'footer':"FOOTER",
+               'form':form
+              }
+        return render(request,'index.html',context)
 
     def post(self,request):
-	form = myForm(request.POST)
-	if form.is_valid():
-	    text = form.cleaned_data['text']
-	    option = form.cleaned_data['option']
-	context = {'text':text,
-		   'option':option
-		  }
-	return render(request,'response.html',context)
+        form = myForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['text']
+            option = form.cleaned_data['option']
+        context = {'text':text,
+               'option':option
+              }
+        return render(request,'response.html',context)
