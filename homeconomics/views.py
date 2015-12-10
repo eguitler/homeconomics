@@ -2,12 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View
 from forms import myForm
+from models import Service
 
 class Home(View):
 
     def get(self,request):
 	form = myForm()
-	context = {'content':"CONTENT",
+        content = [(dt.name) for dt in Service.objects.all()]
+	context = {'content':content,
 		   'footer':"FOOTER",
 		   'form':form
 		  }
