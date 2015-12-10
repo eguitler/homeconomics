@@ -20,5 +20,4 @@ from views import Home
 urlpatterns = [
     url(r'^$',Home.as_view()),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^firstApp/', include('firstApp.urls')),
 ]
