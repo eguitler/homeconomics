@@ -8,9 +8,8 @@ class Home(View):
 
     def get(self,request):
         form = myForm()
-        content = Service.objects.all()
-        context = {'data':content,
-               'footer':"FOOTER",
+        services = Service.objects.all()
+        context = {'services':services,
                'form':form
               }
         return render(request,'index.html',context)
