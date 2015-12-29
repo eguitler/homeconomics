@@ -1,5 +1,9 @@
 {% load staticfiles %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+{% endblock %}
+
 {% block header %}
     <img id="logo" src="{% static "img/logo.jpg" %}">
     <nav>
