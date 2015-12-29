@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="#" method="post">
+        {% csrf_token %}
+        {{ form }}
+    	<input type="submit" value="Send">
+    </form>
+    <table border="1">
+        <tr>
+            <td>Service</td>
+            <td>Last Amount Paid</td>
+            <td>Next Amount To Pay</td>
+            <td>Last Pay Date</td>
+            <td>Next Pay Date</td>
+        </tr>
+        {% for i in services %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>${{ i.lastAmountPaid }}</td>
+                <td>${{ i.nextAmountToPay }}</td>
+                <td>{{ i.lastPayDate }}</td>
+                <td>{{ i.nextPayDate }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
