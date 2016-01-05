@@ -1,1 +1,90 @@
+html {
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
 
+body {
+    margin: 0px;
+    background-color: #A9F5BC;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+a {
+    text-decoration: none;    
+}
+
+#header {
+    background-color: #04B404;
+    border-bottom: 2px solid black;
+    width: 100%;
+    height: 50px;
+    top: 0px;
+}
+
+#header #logo {
+    border: 2px solid black;
+    border-radius: 45px;
+    margin: 1px 10px;
+    width: 80px;
+    float: left;
+}
+
+#header h2 {
+    padding: 0px;
+    float: left;
+}
+
+#header nav {
+    height: 100%;
+    margin-right: 20px;
+    float: right;
+    display: inline-block;
+}
+
+#header nav ul {
+}
+
+#header nav ul li {
+    margin: 0px 10px;
+    display: inline-block;
+    list-style: none;
+}
+
+#header nav ul li a {
+    vertical-align: middle;
+}
+
+#container {
+    min-height: 80% !important;
+    margin: 20px 0px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+#footer {
+    background-color: #04B404;
+    border-top: 2px solid black;
+    width: 100%;
+    min-height: 10%;
+    bottom: 0px;
+    text-align: center;
+}
+
+#footer #social {
+    margin: 10px 0px;
+}
+
+#footer #social a {
+    margin: 0px 3px;
+}
+
+#footer #icons_license {
+    margin: 0pt;
+    font-size: 12px;
+}
