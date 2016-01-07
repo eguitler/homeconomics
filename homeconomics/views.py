@@ -23,3 +23,19 @@ class Home(View):
                'option':option
               }
         return render(request,'response.html',context)
+
+class Services(View):
+
+    def get(self,request):
+        return render(request,'services.html')
+
+    def post(self,request):
+        pass
+
+class Stock(View):
+
+    def get(self,request):
+        return render(request,'stock.html')
+
+    def post(self,request):
+        pass
