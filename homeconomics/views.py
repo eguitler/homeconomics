@@ -27,7 +27,8 @@ class Home(View):
 class Services(View):
 
     def get(self,request):
-        return render(request,'services.html')
+        services = Service.objects.all()
+        return render(request,'services.html',{'services':services})
 
     def post(self,request):
         pass
