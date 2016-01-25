@@ -20,6 +20,7 @@ from views import Home, Services, Stock
 urlpatterns = [
     url(r'^$',Home.as_view()),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^services/', Services.as_view()),
     url(r'^stock/', Stock.as_view()),
 ]
