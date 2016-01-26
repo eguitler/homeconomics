@@ -1,18 +1,9 @@
-html {
-    margin: 0px;
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-body {
+html, body {
     margin: 0px;
     background-color: #A9F5BC;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
 }
 
 a {
@@ -65,6 +56,16 @@ a {
     margin: 20px 0px;
     border: 1px solid black;
     background-color: white;
+    text-align: center;
+}
+
+#content {
+    /* center verticaly */
+    width: 50%;
+    min-height: 75%;
+    border: 1px solid black;
+    margin: 20px auto;
+    vertical-align: middle;
 }
 
 #footer {
