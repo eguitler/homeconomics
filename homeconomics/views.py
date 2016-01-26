@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View
+import datetime, calendar
 from forms import myForm
 from models import Service
 
@@ -28,7 +29,20 @@ class Services(View):
 
     def get(self,request):
         services = Service.objects.all()
-        return render(request,'services.html',{'services':services})
+        today = datetime.datetime.now()
+        print today
+        for s in services:
+            if s.nextPayDate.day == today.day and s.nextPayDate.month == today.month and s.nextPayDate.year == today.year:
+                print "ACTUALIZAR FECHA"
+            else:
+                print "NO ACTUALIZA"
+
+            print s.lastPayDate.day
+        context = { 'services':services,
+                    'totalPaid': sum(s.lastAmountPaid for s in services),
+                    'totalPay': sum(s.nextAmountToPay for s in services)
+                  }
+        return render(request,'services.html',context)
 
     def post(self,request):
         pass
