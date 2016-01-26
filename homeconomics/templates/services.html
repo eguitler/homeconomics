@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content_css %}
+    <link rel="stylesheet" href="{% static "css/services.css" %}" />
+{% endblock %}
 
 {% block content %}
-    <form action="#" method="post">
-        {% csrf_token %}
-        {{ form }}
-    	<input type="submit" value="Send">
-    </form>
+    <button>Add Service</button>
     <table border="1">
         <tr>
             <td>Service</td>
@@ -21,7 +22,19 @@
                 <td>${{ i.nextAmountToPay }}</td>
                 <td>{{ i.lastPayDate }}</td>
                 <td>{{ i.nextPayDate }}</td>
+                <td>
+                    <button>Remove</button>
+                    <button>Modify</button>
+                </td>
             </tr>
+
         {% endfor %}
+    </table>
+    <table border="1">
+        <tr>
+            <td>Total</td>
+            <td>${{ totalPaid }}</td>
+            <td>${{ totalPay }}</td>
+        </tr>
     </table>
 {% endblock %}
