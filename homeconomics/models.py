@@ -1,4 +1,6 @@
 from django.db import models
+import datetime
+
 
 class Service(models.Model):
     
@@ -10,6 +12,12 @@ class Service(models.Model):
 
     def __str__(self):
         return unicode(self.name).encode('utf-8')
+
+    def updateDates(self):
+        self.lastPayDate = self.nextPayDate
+        self.nextPayDate += datetime.timedelta(months=1)
+        self.save()
+
 
 class Item(models.Model):
 
