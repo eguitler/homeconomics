@@ -6,7 +6,9 @@
 {% endblock %}
 
 {% block content %}
-    <button>Add Service</button>
+    <form method="get" action="addservice">
+        <button action="submit">Add Service</button>
+    </form>
     <table border="1">
         <tr>
             <td>Service</td>
@@ -23,8 +25,11 @@
                 <td>{{ i.lastPayDate }}</td>
                 <td>{{ i.nextPayDate }}</td>
                 <td>
-                    <button>Remove</button>
-                    <button>Modify</button>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <button name="remove" value={{i.id}}>Remove</button>
+                        <button name="modify" value={{i.id}}>Modify</button>
+                    </form>
                 </td>
             </tr>
 
