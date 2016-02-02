@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View
-import datetime, calendar
+from datetime import date
+import calendar
+from dateutil.relativedelta import relativedelta
 from forms import myForm
 from models import Service
 
@@ -29,15 +31,15 @@ class Services(View):
 
     def get(self,request):
         services = Service.objects.all()
-        today = datetime.datetime.now()
         for s in services:
-            if s.nextPayDate.day == today.day and s.nextPayDate.month == today.month and s.nextPayDate.year == today.year:
-                print "ACTUALIZAR FECHA"
-            else:
-                print "NO ACTUALIZA"
-        context = { 'services':services,
-                    'totalPaid': sum(s.lastAmountPaid for s in services),
-                    'totalPay': sum(s.nextAmountToPay for s in services)
+	    s.setOnTable()
+	    if s.expired():
+		print s.name + " ACTUALIZAR"
+        totals = [[s.payments[n][0] for s in services] for n in range(0,5)]
+        totals = [sum(month) for month in totals]
+        context = { 'months': self.setMonths(date.today().month),
+		    'services': services,
+                    'totals': totals,
                   }
         return render(request,'services.html',context)
 
@@ -45,14 +47,22 @@ class Services(View):
         item = Service.objects.get(id=(request.POST['remove']))
         item.delete()
         services = Service.objects.all()
-        context = { 'services':services,
-                    'totalPaid': sum(s.lastAmountPaid for s in services),
-                    'totalPay': sum(s.nextAmountToPay for s in services)
+	totals = [[s.payments[n][0] for s in services] for n in range(0,5)]
+        totals = [sum(month) for month in totals]
+        context = { 'months': self.setMonths(today.month),
+		    'services': services,
+                    'totals': totals,
                   }
         return render(request,'services.html',context)
 
     def delete(self,request):
         pass
+
+    def setMonths(self,currentMonth):
+        months = ['October','November','December','January','February','March',
+		  'April','May','June','July','August','September','October',
+		  'November','December','January','February'] 
+	return months[currentMonth:currentMonth+5:]
 
 class Stock(View):
 
