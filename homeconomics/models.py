@@ -2,55 +2,64 @@ from django.db import models
 from dateutil.relativedelta import relativedelta
 from datetime import date
 
-class Service(models.Model):
-
-    name = models.CharField(max_length=10)
+class Payment(models.Model):
     period = models.PositiveSmallIntegerField()
-    toPay = models.FloatField()
+    amount = models.FloatField()
     dueDate = models.DateField()
-    # Payments should be a list for save the last 12.
-    # Add INFO: phone, owner, address, description
-
-    def __str__(self):
-        return unicode(self.name).encode('utf-8')
-
-    def expired(self):
+    
+    def isExpired(self):
 	expired = False
 	today = date.today()
 	if self.dueDate < today:
 	    expired = True
 	return expired
 
+    def update(self):
+        pass
+    
+class History(models.Model):
+    
+    payments = models.ForeignKey(Payment)
+
+    def getPayment(self,month):
+        print Payment.objects.all()
+        try:
+            payment = Payment.objects.get(dueDate__month='month')
+        except ValueError:
+            print "error"
+            payment.amount = 0
+        return payment 
+
+    def checkPayments(self):
+        for p in Payment.objects.all():
+            if p.isExpired():
+                p.update()
+
+class Service(models.Model):
+
+    name = models.CharField(max_length=10)
+    history = models.ForeignKey(History)
+    # Payments should be a list for save the last 12.
+    # Add INFO: phone, owner, address, description
+
+    def __str__(self):
+        return unicode(self.name).encode('utf-8')
+    
+    def getPayment(self,month):
+        return Payment.objects.all()
+
+    def checkPayments(self):
+        self.history.checkPayments()
+
     def setOnTable(self):
 	"""
 	IMPLEMENT DRAW LIST.
 	method recieve a payment object and draw it
 	"""
-	self.payments = [(0,"") for m in range(5)]
-	dif = self.dueDate.month - date.today().month
-	if dif < 3:
-	    self.payments[2 + dif] = (self.toPay, self.dueDate)
-	elif dif > 9:
-	    self.payments[2 + dif - 12] = (self.toPay, self.dueDate)
+	tmp = [self.history.getPayment(m) for m in range(5)]
+        self.payments = [(m.amount,"") for m in tmp]
 
-    def update(self):
-        pass
-    """
-	lastSixMonths = sum(self.payments[n][0] for n in range(0,6))
-	qtyMonthsNotZero = sum(self.payments[n][0] != 0 for n in range(0,6))
-	if self.qtyMonthsPassed == self.period:
-	    self.payments.append((lastSixMonths/qtyMonthsNotZero, self.dueDate + relativedelta(months=self.period)))
-	    self.qtyMonthsPassed = 0
-	else:
-	    self.payments.append((0,""))
-	del self.payments[0]
-	self.dueDate += relativedelta(months=self.period)
-	print self.qtyMonthsPassed
-	# amounts
-	amtPayments = [element[0] for element in self.payments]
-	# save
-        self.save()
-    """
+
 
 class Item(models.Model):
 

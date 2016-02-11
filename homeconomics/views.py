@@ -12,9 +12,9 @@ class Home(View):
     def get(self,request):
         form = myForm()
         services = Service.objects.all()
-        context = {'services':services,
-               'form':form
-              }
+        context = { 'services':services,
+                    'form':form
+                  }
         return render(request,'index.html',context)
 
     def post(self,request):
@@ -22,9 +22,9 @@ class Home(View):
         if form.is_valid():
             text = form.cleaned_data['text']
             option = form.cleaned_data['option']
-        context = {'text':text,
-               'option':option
-              }
+        context = { 'text':text,
+                    'option':option
+                  }
         return render(request,'response.html',context)
 
 class Services(View):
@@ -32,11 +32,10 @@ class Services(View):
     def get(self,request):
         services = Service.objects.all()
         for s in services:
-	    s.setOnTable()
-	    if s.expired():
-		print s.name + " ACTUALIZAR"
-        totals = [[s.payments[n][0] for s in services] for n in range(0,5)]
-        totals = [sum(month) for month in totals]
+            s.checkPayments()
+            s.setOnTable()
+        payments = [[s.getPayment(month).amount for s in services] for month in range(0,5)]
+        totals = [sum(p) for p in payments]
         context = { 'months': self.setMonths(date.today().month),
 		    'services': services,
                     'totals': totals,
