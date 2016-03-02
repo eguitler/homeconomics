@@ -3,24 +3,26 @@ from dateutil.relativedelta import relativedelta
 from datetime import date
 
 class Payment(models.Model):
-    period = models.PositiveSmallIntegerField(null=False)
     amount = models.FloatField(null=False)
-    dueDate = models.DateField(null=False)
+    dueMonth = models.PositiveSmallIntegerField(null=False)
     service = models.ForeignKey("Service", related_name="payments")
+
+    def __str__(self):
+        return unicode(self.dueMonth).encode('utf-8')
 
     def isExpired(self):
         expired = False
-        today = date.today()
-        if self.dueDate < today:
+        currentMonth = date.month()
+        if self.dueMonth < currentMonth or (self.dueMonth == 12 and currentMonth == 1):
             expired = True
         return expired
-
-    def update(self):
-        pass
 
 class Service(models.Model):
 
     name = models.CharField(max_length=10)
+    period = models.PositiveSmallIntegerField(null=False)
+    phone = models.CharField(max_length=11, null=True)
+
     # Payments should be a list for save the last 12.
     # Add INFO: phone, owner, address, description
 
@@ -28,23 +30,20 @@ class Service(models.Model):
         return unicode(self.name).encode('utf-8')
 
     def getPayment(self, month):
-        print payments.objects.all()
         try:
-            payment = Payment.objects.get(dueDate__month='month')
-        except ValueError:
-            print "error"
-            payment.amount = 0
+            payment = self.payments.get(dueMonth=month)
+        except Payment.DoesNotExist:
+            payment = None
         return payment
 
-    def checkPayments(self):
-        for p in Payment.objects.all():
-            if p.isExpired():
-                p.update()
-
-    def setOnTable(self):
-	"""
-	IMPLEMENT DRAW LIST.
-	method recieve a payment object and draw it
-	"""
-        tmp = [payments.getPayment(m) for m in range(5)]
-        self.payments = [(m.amount,"") for m in tmp]
+    def getPaymentsToShow(self):
+        currentMonth = date.today().month
+        possiblesMonths = (11,12,1,2,3,4,5,6,7,8,9,10,11,12,1,2)
+        paymentsToShow = []
+        if currentMonth-2 >= 1 and currentMonth+2 <= 12:
+            for month in range(currentMonth-2,currentMonth+3):
+                thisPayment = self.getPayment(month)
+                amount = thisPayment and thisPayment.amount or 0
+                paymentsToShow.append(amount)
+        print paymentsToShow
+        return paymentsToShow

@@ -31,13 +31,13 @@ class Services(View):
 
     def get(self,request):
         services = Service.objects.all()
+        toShow = []
         for s in services:
-            s.checkPayments()
-            s.setOnTable()
-        payments = [[s.getPayment(month).amount for s in services] for month in range(0,5)]
-        totals = [sum(p) for p in payments]
+            aService = (s.name, s.getPaymentsToShow())
+            toShow.append(aService)
+        totals = self.getTotal(toShow)
         context = { 'months': self.setMonths(date.today().month),
-		    'services': services,
+                    'services': toShow,
                     'totals': totals,
                   }
         return render(request,'services.html',context)
@@ -49,7 +49,7 @@ class Services(View):
 	totals = [[s.payments[n][0] for s in services] for n in range(0,5)]
         totals = [sum(month) for month in totals]
         context = { 'months': self.setMonths(today.month),
-		    'services': services,
+                    'services': services,
                     'totals': totals,
                   }
         return render(request,'services.html',context)
@@ -57,10 +57,13 @@ class Services(View):
     def delete(self,request):
         pass
 
+    def getTotal(self, months):
+        pass
+
     def setMonths(self,currentMonth):
         months = ['October','November','December','January','February','March',
-		  'April','May','June','July','August','September','October',
-		  'November','December','January','February'] 
+                  'April','May','June','July','August','September','October',
+                  'November','December','January','February']
 	return months[currentMonth:currentMonth+5:]
 
 class Stock(View):
